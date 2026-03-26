@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react"; // Adicionado Suspense
 import { useSearchParams, useRouter } from "next/navigation";
 import { PaymentMethod, Payment } from "@/types";
 import { paymentService } from "@/services/extendedServices";
@@ -12,7 +12,8 @@ type Step = "choose" | "pix" | "card" | "success";
 
 const MOCK_PIX_CODE = "00020126580014BR.GOV.BCB.PIX0136a1b2c3d4-e5f6-7890-abcd-ef1234567890520400005303986540555.005802BR5913Agendei6006Ilheus62070503***6304A1B2";
 
-export default function PaymentPage() {
+// 1. Componente que contém a lógica da página
+function PaymentContent() {
   const router = useRouter();
   const params = useSearchParams();
   const appointmentId = params.get("appointmentId") || "apt1";
@@ -135,7 +136,6 @@ export default function PaymentPage() {
           <h1 className="font-display text-2xl font-bold text-dark-50 mb-1">Pagar com Pix</h1>
           <p className="text-dark-400 text-sm font-body mb-6">Escaneie o QR Code ou copie o código</p>
 
-          {/* QR Code placeholder */}
           <div className="card p-6 flex flex-col items-center mb-5">
             <div className="w-48 h-48 bg-white rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden">
               <div className="grid grid-cols-8 gap-0.5 opacity-80">
@@ -152,7 +152,6 @@ export default function PaymentPage() {
             <p className="text-xs text-dark-500 font-body text-center">Válido por <span className="text-orange-400 font-medium">30 minutos</span></p>
           </div>
 
-          {/* Pix code */}
           <div className="card p-4 mb-4">
             <p className="text-xs text-dark-500 font-body mb-2">Código Pix Copia e Cola</p>
             <p className="text-xs text-dark-400 font-mono break-all leading-relaxed line-clamp-3">{MOCK_PIX_CODE}</p>
@@ -167,7 +166,6 @@ export default function PaymentPage() {
             {pixStatus === "waiting" ? "Aguardando pagamento..." : "Pagamento confirmado!"}
           </div>
 
-          {/* Simulate confirmation (mock only) */}
           <button onClick={handleSimulatePix} className="btn-secondary text-xs py-3">
             🧪 Simular pagamento confirmado (mock)
           </button>
@@ -213,5 +211,18 @@ export default function PaymentPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// 2. Export default com Suspense para evitar erro de build no Next.js
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh flex items-center justify-center bg-[#1a1210]">
+        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+      </div>
+    }>
+      <PaymentContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react"; // Adicionado Suspense
 import { useSearchParams, useRouter } from "next/navigation";
 import { reviewService } from "@/services/extendedServices";
 import { mockProviders } from "@/lib/mockData";
@@ -17,7 +17,8 @@ const QUICK_COMMENTS = [
   "Vou voltar com certeza! 👏",
 ];
 
-export default function ReviewPage() {
+// 1. Criamos um componente de conteúdo que isola o uso dos hooks de busca
+function ReviewContent() {
   const router = useRouter();
   const params = useSearchParams();
   const appointmentId = params.get("appointmentId") || "apt3";
@@ -68,13 +69,11 @@ export default function ReviewPage() {
 
   return (
     <div className="min-h-dvh page-enter">
-      {/* Back */}
       <button onClick={() => router.back()} className="fixed top-12 left-5 z-30 w-10 h-10 rounded-xl bg-[#1a1210]/80 backdrop-blur-sm border border-orange-900/20 flex items-center justify-center text-dark-300">
         <ChevronLeft className="w-5 h-5" />
       </button>
 
       <div className="px-5 pt-20 pb-10">
-        {/* Provider info */}
         <div className="flex flex-col items-center text-center mb-8">
           <div className="w-20 h-20 rounded-2xl bg-orange-500/10 border border-orange-500/15 flex items-center justify-center text-4xl mb-4">
             ✂️
@@ -83,7 +82,6 @@ export default function ReviewPage() {
           <p className="text-dark-400 text-sm font-body mt-1">Como foi seu atendimento?</p>
         </div>
 
-        {/* Star rating */}
         <div className="flex flex-col items-center mb-6">
           <div className="flex gap-3 mb-2">
             {[1,2,3,4,5].map(s => (
@@ -109,7 +107,6 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        {/* Quick comments */}
         <div className="mb-5">
           <p className="label mb-3">Sugestões rápidas</p>
           <div className="flex flex-wrap gap-2">
@@ -125,7 +122,6 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Comment */}
         <div className="mb-6">
           <label className="label">Comentário (opcional)</label>
           <textarea
@@ -143,5 +139,18 @@ export default function ReviewPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+// 2. Export default agora é o Wrapper com Suspense
+export default function ReviewPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh flex items-center justify-center bg-[#1a1210]">
+        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+      </div>
+    }>
+      <ReviewContent />
+    </Suspense>
   );
 }
