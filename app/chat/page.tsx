@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react"; // Adicionado Suspense
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Conversation, ChatMessage } from "@/types";
 import { chatService } from "@/services/extendedServices";
@@ -11,26 +11,25 @@ import Link from "next/link";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 
-// 1. Renomeamos o componente original para ChatContent
-function ChatContent() {
+// ─── Wrapper com Suspense (obrigatório para useSearchParams no Next.js 14) ────
+export default function ChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh flex items-center justify-center">
+        <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
+      </div>
+    }>
+      <ChatPageInner />
+    </Suspense>
+  );
+}
+
+function ChatPageInner() {
   const params = useSearchParams();
   const conversationId = params.get("id");
 
   if (conversationId) return <ChatRoom conversationId={conversationId} />;
   return <ConversationList />;
-}
-
-// 2. O export default agora envolve o conteúdo em um Suspense
-export default function ChatPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-dvh flex items-center justify-center bg-[#1a1210]">
-        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-      </div>
-    }>
-      <ChatContent />
-    </Suspense>
-  );
 }
 
 // ─── Conversations List ───────────────────────────────────────────────────────
@@ -173,7 +172,6 @@ function ChatRoom({ conversationId }: { conversationId: string }) {
   };
 
   const formatTime = (iso: string) => new Date(iso).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-
   const isMe = (msg: ChatMessage) => msg.senderId === (user?.id || "client1");
 
   const groupedMsgs: { date: string; messages: ChatMessage[] }[] = [];
@@ -186,6 +184,7 @@ function ChatRoom({ conversationId }: { conversationId: string }) {
 
   return (
     <div className="min-h-dvh flex flex-col page-enter">
+      {/* Header */}
       <div className="sticky top-0 z-30 bg-[#1a1210]/95 backdrop-blur-xl border-b border-orange-900/10 px-4 py-3 pt-12 flex items-center gap-3">
         <Link href="/chat" className="w-9 h-9 rounded-xl bg-orange-500/8 flex items-center justify-center text-dark-400 hover:text-dark-200 flex-shrink-0">
           <ChevronLeft className="w-5 h-5" />
@@ -199,6 +198,7 @@ function ChatRoom({ conversationId }: { conversationId: string }) {
         </div>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {loading ? (
           <div className="flex items-center justify-center py-20">
@@ -226,10 +226,9 @@ function ChatRoom({ conversationId }: { conversationId: string }) {
                           <span className={clsx("text-[10px]", mine ? "text-white/60" : "text-dark-600")}>
                             {formatTime(msg.createdAt)}
                           </span>
-                          {mine && (
-                            msg.read
-                              ? <CheckCheck className="w-3 h-3 text-white/60" />
-                              : <Check className="w-3 h-3 text-white/50" />
+                          {mine && (msg.read
+                            ? <CheckCheck className="w-3 h-3 text-white/60" />
+                            : <Check className="w-3 h-3 text-white/50" />
                           )}
                         </div>
                       </div>
@@ -243,6 +242,7 @@ function ChatRoom({ conversationId }: { conversationId: string }) {
         <div ref={bottomRef} />
       </div>
 
+      {/* Input */}
       <div className="sticky bottom-0 border-t border-orange-900/15 bg-[#1a1210]/95 backdrop-blur-xl px-4 py-3 pb-8">
         <div className="flex items-center gap-2">
           <input

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react"; // Adicionado Suspense
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { reviewService } from "@/services/extendedServices";
 import { mockProviders } from "@/lib/mockData";
@@ -17,8 +17,19 @@ const QUICK_COMMENTS = [
   "Vou voltar com certeza! 👏",
 ];
 
-// 1. Criamos um componente de conteúdo que isola o uso dos hooks de busca
-function ReviewContent() {
+export default function ReviewPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-dvh flex items-center justify-center">
+        <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
+      </div>
+    }>
+      <ReviewPageInner />
+    </Suspense>
+  );
+}
+
+function ReviewPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const appointmentId = params.get("appointmentId") || "apt3";
@@ -82,6 +93,7 @@ function ReviewContent() {
           <p className="text-dark-400 text-sm font-body mt-1">Como foi seu atendimento?</p>
         </div>
 
+        {/* Star rating */}
         <div className="flex flex-col items-center mb-6">
           <div className="flex gap-3 mb-2">
             {[1,2,3,4,5].map(s => (
@@ -93,12 +105,8 @@ function ReviewContent() {
                 className="transition-transform active:scale-90"
                 style={{ transform: (hovered || rating) >= s ? "scale(1.15)" : "scale(1)" }}
               >
-                <Star
-                  className={clsx(
-                    "w-10 h-10 transition-colors duration-150",
-                    (hovered || rating) >= s ? "fill-amber-400 text-amber-400" : "text-dark-700"
-                  )}
-                />
+                <Star className={clsx("w-10 h-10 transition-colors duration-150",
+                  (hovered || rating) >= s ? "fill-amber-400 text-amber-400" : "text-dark-700")} />
               </button>
             ))}
           </div>
@@ -107,30 +115,25 @@ function ReviewContent() {
           </p>
         </div>
 
+        {/* Quick comments */}
         <div className="mb-5">
           <p className="label mb-3">Sugestões rápidas</p>
           <div className="flex flex-wrap gap-2">
             {QUICK_COMMENTS.map(q => (
-              <button
-                key={q}
-                onClick={() => setComment(prev => prev ? `${prev} ${q}` : q)}
-                className="text-xs px-3 py-2 rounded-xl border border-orange-900/20 bg-[#261914] text-dark-300 hover:border-orange-500/30 hover:text-orange-400 transition-all font-body"
-              >
+              <button key={q} onClick={() => setComment(prev => prev ? `${prev} ${q}` : q)}
+                className="text-xs px-3 py-2 rounded-xl border border-orange-900/20 bg-[#261914] text-dark-300 hover:border-orange-500/30 hover:text-orange-400 transition-all font-body">
                 {q}
               </button>
             ))}
           </div>
         </div>
 
+        {/* Comment */}
         <div className="mb-6">
           <label className="label">Comentário (opcional)</label>
-          <textarea
-            className="input-field resize-none h-28 pt-3"
+          <textarea className="input-field resize-none h-28 pt-3"
             placeholder="Conte sua experiência em detalhes..."
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            maxLength={500}
-          />
+            value={comment} onChange={e => setComment(e.target.value)} maxLength={500} />
           <p className="text-xs text-dark-700 font-body text-right mt-1">{comment.length}/500</p>
         </div>
 
@@ -139,18 +142,5 @@ function ReviewContent() {
         </button>
       </div>
     </div>
-  );
-}
-
-// 2. Export default agora é o Wrapper com Suspense
-export default function ReviewPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-dvh flex items-center justify-center bg-[#1a1210]">
-        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-      </div>
-    }>
-      <ReviewContent />
-    </Suspense>
   );
 }
