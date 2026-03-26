@@ -7,7 +7,7 @@ import {
 } from "@/lib/mockDataExtended";
 import {
   Review, CreateReviewPayload, SpendingRecord, SpendingSummary,
-  Favorite, ChatMessage, Conversation, Notification,
+  Favorite, ChatMessage, Conversation, AppNotification,
   Payment, CreatePaymentPayload, RevenueData, Service,
 } from "@/types";
 import { mockProviders } from "@/lib/mockData";
@@ -116,9 +116,9 @@ export const chatService = {
 
 // ─── Notifications ────────────────────────────────────────────────────────────
 export const notificationService = {
-  async getNotifications(): Promise<Notification[]> {
+  async getNotifications(): Promise<AppNotification[]> {
     if (USE_MOCK) { await mockDelay(600); return mockNotifications; }
-    const { data } = await api.get<Notification[]>("/notifications");
+    const { data } = await api.get<AppNotification[]>("/notifications");
     return data;
   },
   async markAsRead(id: string): Promise<void> {
