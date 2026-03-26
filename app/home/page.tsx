@@ -149,7 +149,7 @@ function ClientHome() {
             >
               <span className="text-xl">🔍</span>
               <span className="text-[10px] font-body text-dark-400 leading-tight text-center">Todos</span>
-            </Link>
+            </button>
             {SERVICE_CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
@@ -163,7 +163,7 @@ function ClientHome() {
               >
                 <span className="text-xl">{cat.icon}</span>
                 <span className="text-[10px] font-body text-dark-400 leading-tight text-center">{cat.label}</span>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -275,7 +275,7 @@ function ProviderHome() {
             className="text-xs text-dark-500 hover:text-dark-300 font-body transition-colors px-3 py-2 rounded-lg hover:bg-orange-900/20"
           >
             Sair
-          </Link>
+          </button>
         </div>
       </div>
 
