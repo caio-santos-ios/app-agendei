@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #1a1210;
+  --bg-secondary: #2d1f1a;
+  --bg-card: #261914;
+  --accent: #f97316;
+  --accent-light: #fb923c;
+  --accent-dim: rgba(249, 115, 22, 0.15);
+  --text-primary: #f8f7f4;
+  --text-secondary: #b8a98e;
+  --text-muted: #6b5c52;
+  --border: rgba(249, 115, 22, 0.12);
+  --border-hover: rgba(249, 115, 22, 0.35);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(249, 115, 22, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: var(--accent-dim);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Reusable Component Classes ── */
+@layer components {
+  .card {
+    @apply bg-[#261914] border border-orange-900/20 rounded-2xl;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-hover {
+    @apply card transition-all duration-300;
+  }
+  .card-hover:hover {
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: var(--shadow-card), var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+
+  .input-field {
+    @apply w-full bg-[#1a1210] border border-orange-900/20 rounded-xl px-4 py-3.5
+           text-dark-50 font-body text-sm placeholder-dark-500
+           focus:outline-none focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/10
+           transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply w-full bg-orange-500 hover:bg-orange-400 text-white font-body font-medium
+           rounded-xl py-3.5 px-6 text-sm tracking-wide
+           transition-all duration-200 active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply w-full bg-transparent border border-orange-500/30 hover:border-orange-500/60
+           text-orange-400 hover:text-orange-300 font-body font-medium
+           rounded-xl py-3.5 px-6 text-sm tracking-wide
+           transition-all duration-200 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent hover:bg-orange-500/10 text-dark-200 hover:text-orange-400
+           rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-confirmed {
+    @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+  }
+
+  .badge-pending {
+    @apply badge bg-amber-500/15 text-amber-400 border border-amber-500/20;
+  }
+
+  .badge-cancelled {
+    @apply badge bg-red-500/15 text-red-400 border border-red-500/20;
+  }
+
+  .badge-completed {
+    @apply badge bg-blue-500/15 text-blue-400 border border-blue-500/20;
+  }
+
+  .section-title {
+    @apply font-display text-xl text-dark-50 font-semibold;
+  }
+
+  .label {
+    @apply text-xs font-medium text-dark-400 uppercase tracking-wider mb-2 block;
+  }
+
+  /* Page transitions */
+  .page-enter {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 9999;
+  }
+
+  /* Mobile bottom nav safe area */
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  }
+}
+
+/* Floating label animation */
+.input-wrapper { position: relative; }
+.input-wrapper .float-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+.input-wrapper input:focus + .float-label,
+.input-wrapper input:not(:placeholder-shown) + .float-label {
+  top: 8px;
+  font-size: 10px;
+  color: var(--accent);
+  transform: none;
+}
