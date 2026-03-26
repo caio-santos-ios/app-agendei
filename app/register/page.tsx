@@ -63,14 +63,14 @@ export default function RegisterPage() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-orange-900/8 blur-[100px]" />
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-6 relative z-10">
         {/* Header */}
-        <div className="flex flex-col items-center mb-10" style={{ animation: "fadeUp 0.5s ease forwards" }}>
+        {/* <div className="flex flex-col items-center mb-10" style={{ animation: "fadeUp 0.5s ease forwards" }}>
           <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
             <Scissors className="w-6 h-6 text-orange-400" />
           </div>
           <h1 className="font-display text-3xl font-bold text-dark-50">agendei</h1>
-        </div>
+        </div> */}
 
         <div className="w-full max-w-sm" style={{ animation: "fadeUp 0.5s 0.1s ease both" }}>
           <div className="card p-7">

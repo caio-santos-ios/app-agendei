@@ -44,7 +44,7 @@ export default function LoginPage() {
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 relative z-10">
         {/* Logo */}
-        <div
+        {/* <div
           className="flex flex-col items-center mb-12"
           style={{ animation: "fadeUp 0.6s ease forwards" }}
         >
@@ -58,7 +58,7 @@ export default function LoginPage() {
           <p className="text-dark-400 text-sm mt-1.5 font-body">
             Serviços na palma da mão
           </p>
-        </div>
+        </div> */}
 
         {/* Card */}
         <div
@@ -135,7 +135,7 @@ export default function LoginPage() {
             </form>
 
             {/* Divider */}
-            <div className="relative my-6">
+            {/* <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-orange-900/20" />
               </div>
@@ -144,10 +144,10 @@ export default function LoginPage() {
                   ou continue com
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Demo accounts */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => { setEmail("joao@email.com"); setPassword("123456"); }}
                 className="btn-secondary text-xs py-2.5"
@@ -160,7 +160,7 @@ export default function LoginPage() {
               >
                 Demo Prestador
               </button>
-            </div>
+            </div> */}
           </div>
 
           <p className="text-center text-dark-400 text-sm mt-6 font-body">
