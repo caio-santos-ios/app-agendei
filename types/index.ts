@@ -206,7 +206,7 @@ export type NotificationType =
   | "new_review"
   | "payment_received";
 
-export interface Notification {
+export interface AppNotification {
   id: string;
   userId: string;
   type: NotificationType;

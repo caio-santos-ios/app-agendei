@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Notification } from "@/types";
+// import { Notification } from "@/types";
 import { notificationService } from "@/services/extendedServices";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Bell, BellOff, Calendar, MessageCircle, Star, DollarSign, X, Check, Loader2 } from "lucide-react";
 import clsx from "clsx";
 import toast from "react-hot-toast";
+import { AppNotification } from "@/types";
 
 const TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: string }> = {
   appointment_confirmed: { icon: <Calendar className="w-4 h-4" />, color: "text-emerald-400", bg: "bg-emerald-500/10" },
@@ -18,7 +19,7 @@ const TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: st
 };
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [pushEnabled, setPushEnabled] = useState(false);
   const [pushLoading, setPushLoading] = useState(false);

@@ -1,7 +1,7 @@
 // lib/mockDataExtended.ts
 import {
   Review, SpendingRecord, SpendingSummary, Favorite,
-  ChatMessage, Conversation, Notification, Payment,
+  ChatMessage, Conversation, AppNotification, Payment,
   RevenueData, User, Service,
 } from "@/types";
 import { mockUsers, mockProviders, mockAppointments, mockDelay } from "./mockData";
@@ -108,7 +108,7 @@ export const mockMessages: Record<string, ChatMessage[]> = {
 };
 
 // ─── Notifications ────────────────────────────────────────────────────────────
-export const mockNotifications: Notification[] = [
+export const mockNotifications: AppNotification[] = [
   { id: "n1", userId: "client1", type: "appointment_confirmed", title: "Agendamento confirmado! ✅", body: "Barbearia do Carlos confirmou seu corte para amanhã às 10h.", read: false, data: { appointmentId: "apt1" }, createdAt: "2025-07-26T09:00:00Z" },
   { id: "n2", userId: "client1", type: "appointment_reminder", title: "Lembrete de amanhã 📅", body: "Você tem Coloração com Studio Ana Lima às 14h.", read: false, data: { appointmentId: "apt2" }, createdAt: "2025-07-29T08:00:00Z" },
   { id: "n3", userId: "client1", type: "new_message", title: "Nova mensagem de Carlos 💬", body: "Às 10h então, te aguardo! ✂️", read: false, data: { conversationId: "conv1" }, createdAt: "2025-07-26T14:32:00Z" },
